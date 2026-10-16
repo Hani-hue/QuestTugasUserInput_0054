@@ -140,3 +140,32 @@ fun FieldTglLahir(
         onValueChange = {}
     )
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DialogTanggal(
+    datePickerState: DatePickerState,
+    onDismiss: () -> Unit,
+    onTanggalDipilih: (String) -> Unit
+) {
+    DatePickerDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            TextButton(onClick = {
+                datePickerState.selectedDateMillis?.let {
+                    val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                    format.timeZone = TimeZone.getTimeZone("UTC")
+                    onTanggalDipilih(format.format(Date(it)))
+                }
+                onDismiss()
+            }) { Text(stringResource(id = R.string.dialog_ok)) }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(id = R.string.dialog_batal))
+            }
+        }
+    ) {
+        DatePicker(state = datePickerState)
+    }
+}
