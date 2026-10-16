@@ -73,3 +73,30 @@ fun JudulForm() {
         color = colorResource(id = R.color.abu_teks)
     )
 }
+
+@Composable
+fun FieldNama(
+    namaDepan: String,
+    onNamaDepanChange: (String) -> Unit,
+    namaBelakang: String,
+    onNamaBelakangChange: (String) -> Unit
+) {
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        OutlinedTextField(
+            value = namaDepan,
+            singleLine = true,
+            shape = MaterialTheme.shapes.large,
+            modifier = Modifier.weight(1f),
+            label = { Text(text = stringResource(id = R.string.label_nama_depan)) },
+            onValueChange = onNamaDepanChange
+        )
+        OutlinedTextField(
+            value = namaBelakang,
+            singleLine = true,
+            shape = MaterialTheme.shapes.large,
+            modifier = Modifier.weight(1f),
+            label = { Text(text = stringResource(id = R.string.label_nama_belakang)) },
+            onValueChange = onNamaBelakangChange
+        )
+    }
+}
