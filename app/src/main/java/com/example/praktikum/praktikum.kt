@@ -1,4 +1,3 @@
-
 package com.example.praktikum
 
 import androidx.compose.foundation.layout.Arrangement
@@ -46,6 +45,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -280,7 +280,7 @@ fun CardHasil(item: Biodata) {
         colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.black)),
         modifier = Modifier.width(300.dp)
     ) {
-        Column(modifier = Modifier.padding(horizontal = 5.dp, vertical = 15.dp)) {
+        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
             Text(text = stringResource(id = R.string.hasil_nama, item.nama), color = colorResource(id = R.color.white))
             Text(text = stringResource(id = R.string.hasil_email, item.email), color = colorResource(id = R.color.white))
             Text(text = stringResource(id = R.string.hasil_tgl_lahir, item.tglLahir), color = colorResource(id = R.color.white))
@@ -290,10 +290,13 @@ fun CardHasil(item: Biodata) {
     }
 }
 
-//card dibuat dinamis: jumlah card mengikuti jumlah data di daftarHasil
+//card hasil ditampilkan sebagai popup di tengah layar (Dialog otomatis ke tengah + background gelap)
 @Composable
-fun DaftarHasil(daftarHasil: List<Biodata>) {
-    daftarHasil.forEach { item ->
+fun PopupHasil(
+    item: Biodata,
+    onDismiss: () -> Unit
+) {
+    Dialog(onDismissRequest = onDismiss) {
         CardHasil(item = item)
     }
 }
@@ -320,11 +323,22 @@ fun FormDataDiri(modifier: Modifier){
     //variabel untuk menyimpan data yang diperoleh dari komponen UI
     val daftarHasil = remember { mutableStateListOf<Biodata>() }
 
+    //variabel untuk menampilkan popup hasil
+    var tampilHasil by remember { mutableStateOf(false) }
+
     if (tampilTanggal) {
         DialogTanggal(
             datePickerState = datePickerState,
             onDismiss = { tampilTanggal = false },
             onTanggalDipilih = { textTglLahir = it }
+        )
+    }
+
+    //popup hasil tampil di tengah layar, menampilkan data yang terakhir di-submit
+    if (tampilHasil && daftarHasil.isNotEmpty()) {
+        PopupHasil(
+            item = daftarHasil.last(),
+            onDismiss = { tampilHasil = false }
         )
     }
 
@@ -383,6 +397,7 @@ fun FormDataDiri(modifier: Modifier){
                         skill = skillTerpilih.joinToString(", ")
                     )
                 )
+                tampilHasil = true
                 textNamaDepan = ""
                 textNamaBelakang = ""
                 textEmail = ""
@@ -393,7 +408,5 @@ fun FormDataDiri(modifier: Modifier){
         )
 
         PembatasForm()
-
-        DaftarHasil(daftarHasil = daftarHasil)
     }
 }
