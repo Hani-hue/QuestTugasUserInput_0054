@@ -30,4 +30,8 @@
         <item>3 - 5 Tahun</item>
         <item>Lebih dari 5 Tahun</item>
     </string-array>
+
+    <string-array name="skill_options">
+        <item>Kotlin</item>
+    </string-array>
 </resources>
