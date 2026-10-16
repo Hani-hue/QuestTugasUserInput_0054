@@ -33,5 +33,7 @@
 
     <string-array name="skill_options">
         <item>Kotlin</item>
+        <item>Database</item>
+
     </string-array>
 </resources>
