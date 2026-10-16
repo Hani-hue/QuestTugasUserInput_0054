@@ -13,4 +13,8 @@
 
     <string name="dialog_ok">OK</string>
     <string name="dialog_batal">Batal</string>
+
+    <string name="desc_gambar">Gambar header form biodata</string>
+    <string name="desc_ikon_tanggal">Pilih tanggal lahir</string>
+    <string name="desc_ikon_dropdown">Pilih experience</string>
 </resources>
