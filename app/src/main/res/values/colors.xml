@@ -3,5 +3,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="ungu_judul">#FF6A3FB5</color>
+    <color name="ungu_gelap">#FF2B0A4D</color>
 
 </resources>
