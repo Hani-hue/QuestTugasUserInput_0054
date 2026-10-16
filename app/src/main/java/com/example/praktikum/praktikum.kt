@@ -58,3 +58,18 @@ data class Biodata(
     val experience: String,
     val skill: String
 )
+
+@Composable
+fun JudulForm() {
+    Text(
+        text = stringResource(id = R.string.judul_form),
+        style = MaterialTheme.typography.headlineMedium,
+        fontWeight = FontWeight.Bold,
+        color = colorResource(id = R.color.ungu_judul)
+    )
+    Text(
+        text = stringResource(id = R.string.subjudul_form),
+        style = MaterialTheme.typography.bodySmall,
+        color = colorResource(id = R.color.abu_teks)
+    )
+}
