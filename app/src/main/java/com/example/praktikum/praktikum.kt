@@ -1,3 +1,4 @@
+
 package com.example.praktikum
 
 import androidx.compose.foundation.layout.Arrangement
@@ -167,5 +168,232 @@ fun DialogTanggal(
         }
     ) {
         DatePicker(state = datePickerState)
+    }
+}
+
+@Composable
+fun DropdownExperience(
+    modifier: Modifier,
+    experience: String,
+    pilihan: List<String>,
+    onPilih: (String) -> Unit
+) {
+    var tampilExperience by remember { mutableStateOf(false) }
+
+    Box(modifier = modifier) {
+        OutlinedTextField(
+            value = experience,
+            readOnly = true,
+            singleLine = true,
+            shape = MaterialTheme.shapes.large,
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text(text = stringResource(id = R.string.label_experience)) },
+            trailingIcon = {
+                IconButton(onClick = { tampilExperience = true }) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowDropDown,
+                        contentDescription = stringResource(id = R.string.desc_ikon_dropdown)
+                    )
+                }
+            },
+            onValueChange = {}
+        )
+        DropdownMenu(
+            expanded = tampilExperience,
+            onDismissRequest = { tampilExperience = false }
+        ) {
+            pilihan.forEach { item ->
+                DropdownMenuItem(
+                    text = { Text(text = item) },
+                    onClick = {
+                        onPilih(item)
+                        tampilExperience = false
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun PilihSkill(
+    daftarSkill: List<String>,
+    skillTerpilih: MutableList<String>
+) {
+    Text(
+        text = stringResource(id = R.string.label_skill),
+        style = MaterialTheme.typography.labelLarge,
+        fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Start,
+        modifier = Modifier.fillMaxWidth()
+    )
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        daftarSkill.forEach { item ->
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Checkbox(
+                    checked = skillTerpilih.contains(item),
+                    onCheckedChange = {
+                        if (it) skillTerpilih.add(item) else skillTerpilih.remove(item)
+                    }
+                )
+                Text(text = item, style = MaterialTheme.typography.bodySmall)
+            }
+        }
+    }
+}
+
+@Composable
+fun TombolProceed(
+    enabled: Boolean,
+    onClick: () -> Unit
+) {
+    Button(
+        modifier = Modifier.fillMaxWidth(fraction = 1f),
+        //the button is enabled when all fields are filled
+        enabled = enabled,
+        onClick = onClick
+    ) {
+        Text(stringResource(id = R.string.submit))
+    }
+}
+
+@Composable
+fun PembatasForm() {
+    HorizontalDivider(
+        modifier = Modifier.padding(
+            bottom = dimensionResource(id = R.dimen.padding_medium),
+            top = dimensionResource(id = R.dimen.padding_medium)
+        ),
+        thickness = dimensionResource(id = R.dimen.divider_tipis),
+        color = colorResource(id = R.color.abu_tua)
+    )
+}
+
+@Composable
+fun CardHasil(item: Biodata) {
+    ElevatedCard(
+        elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
+        colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.black)),
+        modifier = Modifier.width(300.dp)
+    ) {
+        Column(modifier = Modifier.padding(horizontal = 5.dp, vertical = 15.dp)) {
+            Text(text = stringResource(id = R.string.hasil_nama, item.nama), color = colorResource(id = R.color.white))
+            Text(text = stringResource(id = R.string.hasil_email, item.email), color = colorResource(id = R.color.white))
+            Text(text = stringResource(id = R.string.hasil_tgl_lahir, item.tglLahir), color = colorResource(id = R.color.white))
+            Text(text = stringResource(id = R.string.hasil_experience, item.experience), color = colorResource(id = R.color.white))
+            Text(text = stringResource(id = R.string.hasil_skill, item.skill), color = colorResource(id = R.color.white))
+        }
+    }
+}
+
+//card dibuat dinamis: jumlah card mengikuti jumlah data di daftarHasil
+@Composable
+fun DaftarHasil(daftarHasil: List<Biodata>) {
+    daftarHasil.forEach { item ->
+        CardHasil(item = item)
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun FormDataDiri(modifier: Modifier){
+    //variabel-variabel untuk mengingat nilai masukan dari keyboard
+    var textNamaDepan by remember { mutableStateOf("") }
+    var textNamaBelakang by remember { mutableStateOf("") }
+    var textEmail by remember { mutableStateOf("") }
+    var textTglLahir by remember { mutableStateOf("") }
+    var textExperience by remember { mutableStateOf("") }
+    val skillTerpilih = remember { mutableStateListOf<String>() }
+
+    //daftar pilihan diambil dari resources (dinamis)
+    val experience: List<String> = stringArrayResource(id = R.array.experience_options).toList()
+    val skill: List<String> = stringArrayResource(id = R.array.skill_options).toList()
+
+    //variabel untuk dialog tanggal
+    var tampilTanggal by remember { mutableStateOf(false) }
+    val datePickerState = rememberDatePickerState()
+
+    //variabel untuk menyimpan data yang diperoleh dari komponen UI
+    val daftarHasil = remember { mutableStateListOf<Biodata>() }
+
+    if (tampilTanggal) {
+        DialogTanggal(
+            datePickerState = datePickerState,
+            onDismiss = { tampilTanggal = false },
+            onTanggalDipilih = { textTglLahir = it }
+        )
+    }
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 24.dp, vertical = 24.dp),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        JudulForm()
+
+        FieldNama(
+            namaDepan = textNamaDepan,
+            onNamaDepanChange = { textNamaDepan = it },
+            namaBelakang = textNamaBelakang,
+            onNamaBelakangChange = { textNamaBelakang = it }
+        )
+
+        FieldEmail(
+            email = textEmail,
+            onEmailChange = { textEmail = it }
+        )
+
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FieldTglLahir(
+                modifier = Modifier.weight(1f),
+                tglLahir = textTglLahir,
+                onIkonClick = { tampilTanggal = true }
+            )
+            DropdownExperience(
+                modifier = Modifier.weight(1f),
+                experience = textExperience,
+                pilihan = experience,
+                onPilih = { textExperience = it }
+            )
+        }
+
+        PilihSkill(
+            daftarSkill = skill,
+            skillTerpilih = skillTerpilih
+        )
+
+        TombolProceed(
+            enabled = textNamaDepan.isNotEmpty() && textNamaBelakang.isNotEmpty() &&
+                    textEmail.isNotEmpty() && textTglLahir.isNotEmpty() &&
+                    textExperience.isNotEmpty() && skillTerpilih.isNotEmpty(),
+            onClick = {
+                daftarHasil.add(
+                    Biodata(
+                        nama = textNamaDepan + " " + textNamaBelakang,
+                        email = textEmail,
+                        tglLahir = textTglLahir,
+                        experience = textExperience,
+                        skill = skillTerpilih.joinToString(", ")
+                    )
+                )
+                textNamaDepan = ""
+                textNamaBelakang = ""
+                textEmail = ""
+                textTglLahir = ""
+                textExperience = ""
+                skillTerpilih.clear()
+            }
+        )
+
+        PembatasForm()
+
+        DaftarHasil(daftarHasil = daftarHasil)
     }
 }
