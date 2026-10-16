@@ -17,4 +17,7 @@
     <string name="desc_gambar">Gambar header form biodata</string>
     <string name="desc_ikon_tanggal">Pilih tanggal lahir</string>
     <string name="desc_ikon_dropdown">Pilih experience</string>
+
+    <string name="hasil_nama">Nama : %1$s</string>
+    <string name="hasil_email">Email : %1$s</string>
 </resources>
