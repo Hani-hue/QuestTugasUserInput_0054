@@ -20,4 +20,5 @@
 
     <string name="hasil_nama">Nama : %1$s</string>
     <string name="hasil_email">Email : %1$s</string>
+    <string name="hasil_tgl_lahir">Tgl Lahir : %1$s</string>
 </resources>
