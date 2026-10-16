@@ -49,3 +49,12 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+
+//data class untuk menyimpan satu hasil biodata yang sudah di-submit
+data class Biodata(
+    val nama: String,
+    val email: String,
+    val tglLahir: String,
+    val experience: String,
+    val skill: String
+)
