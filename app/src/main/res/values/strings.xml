@@ -23,4 +23,8 @@
     <string name="hasil_tgl_lahir">Tgl Lahir : %1$s</string>
     <string name="hasil_experience">Experience : %1$s</string>
     <string name="hasil_skill">Skill : %1$s</string>
+
+    <string-array name="experience_options">
+        <item>Kurang dari 1 Tahun</item>
+    </string-array>
 </resources>
