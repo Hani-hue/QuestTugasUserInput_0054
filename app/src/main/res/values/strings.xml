@@ -26,5 +26,7 @@
 
     <string-array name="experience_options">
         <item>Kurang dari 1 Tahun</item>
+        <item>1 - 3 Tahun</item>
+
     </string-array>
 </resources>
