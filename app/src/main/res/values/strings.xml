@@ -10,4 +10,7 @@
     <string name="label_experience">Experience</string>
     <string name="label_skill">Pilih Skill Anda :</string>
     <string name="submit">Proceed</string>
+
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_batal">Batal</string>
 </resources>
