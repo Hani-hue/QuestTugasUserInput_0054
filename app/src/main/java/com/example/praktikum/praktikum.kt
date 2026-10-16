@@ -115,3 +115,28 @@ fun FieldEmail(
         onValueChange = onEmailChange
     )
 }
+
+@Composable
+fun FieldTglLahir(
+    modifier: Modifier,
+    tglLahir: String,
+    onIkonClick: () -> Unit
+) {
+    OutlinedTextField(
+        value = tglLahir,
+        readOnly = true,
+        singleLine = true,
+        shape = MaterialTheme.shapes.large,
+        modifier = modifier,
+        label = { Text(text = stringResource(id = R.string.label_tgl_lahir)) },
+        trailingIcon = {
+            IconButton(onClick = onIkonClick) {
+                Icon(
+                    imageVector = Icons.Filled.DateRange,
+                    contentDescription = stringResource(id = R.string.desc_ikon_tanggal)
+                )
+            }
+        },
+        onValueChange = {}
+    )
+}
